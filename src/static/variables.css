@@ -1,0 +1,8 @@
+.main-theme {
+    --background-color: #e6f0ec;
+    --main-color-dark: #2e5630;
+    --confirmation-background-color: #acbda3;
+    --confirmation-code-input: #ffffff;
+    --text-color: #000000;
+    --alt-text-color: #ffffff;
+}
