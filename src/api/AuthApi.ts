@@ -1,6 +1,6 @@
 import { User } from "../data/auth/Auth";
 
-const AUTH_API = process.env.AUTH_API;
+const AUTH_API = process.env.REACT_APP_AUTH_API;
 
 export const getMe = async (): Promise<User> => {
     const res = await fetch(`${AUTH_API}/me`, {
@@ -14,7 +14,7 @@ export const getMe = async (): Promise<User> => {
 };
 
 export const login = async (data: {
-    username: string;
+    login: string;
     password: string;
 }): Promise<User> => {
     const res = await fetch(`${AUTH_API}/login`, {
@@ -37,12 +37,12 @@ export const logout = async (): Promise<void> => {
 
     if (!res.ok) throw new Error("Logout failed");
 };
-
-export const refresh = async (): Promise<void> => {
-    const res = await fetch(`${AUTH_API}/refresh`, {
-        method: "POST",
-        credentials: "include",
-    });
-
-    if (!res.ok) throw new Error("Refresh failed");
-};
+//
+// export const refresh = async (): Promise<void> => {
+//     const res = await fetch(`${AUTH_API}/refresh`, {
+//         method: "POST",
+//         credentials: "include",
+//     });
+//
+//     if (!res.ok) throw new Error("Refresh failed");
+// };
