@@ -1,12 +1,14 @@
 import { useState } from "react";
 import "../../static/Auth.scss";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useAuth } from "../../context/AuthProvider";
 
 type AuthMode = "login" | "register";
 
 const Auth = () => {
     const navigate = useNavigate();
     const location = useLocation();
+    const { login, register } = useAuth();
 
     const mode: AuthMode =
         location.pathname.includes("register") ? "register" : "login";
@@ -26,12 +28,32 @@ const Auth = () => {
         }));
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        if (mode === "register" && form.password !== form.confirmPassword) {
-            alert("Пароли не совпадают");
-            return;
+        try {
+            if (mode === "register") {
+                if (form.password !== form.confirmPassword) {
+                    alert("Пароли не совпадают");
+                    return;
+                }
+
+                await register({
+                    login: form.login,
+                    password: form.password,
+                });
+
+            } else {
+                await login({
+                    login: form.login,
+                    password: form.password,
+                });
+            }
+
+            navigate("/admin");
+
+        } catch (e) {
+            alert("Ошибка авторизации");
         }
     };
 
@@ -46,7 +68,7 @@ const Auth = () => {
 
                 <form onSubmit={handleSubmit}>
                     <input
-                        type="login"
+                        type="text"
                         name="login"
                         placeholder="Имя пользователя"
                         value={form.login}

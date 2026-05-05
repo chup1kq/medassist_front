@@ -1,14 +1,20 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { getMe, login, logout, refresh } from "../api/AuthApi";
+import {
+    getMe,
+    login as loginApi,
+    logout as logoutApi,
+} from "../api/AuthApi";
+import { register as registerApi } from "../api/UserApi";
 import { User } from "../data/auth/Auth";
 
 interface AuthContextType {
     user: User | null;
     isAuthenticated: boolean;
     loading: boolean;
-    login: (data: { username: string; password: string }) => Promise<void>;
+
+    login: (data: { login: string; password: string }) => Promise<void>;
+    register: (data: { login: string; password: string }) => Promise<void>;
     logout: () => Promise<void>;
-    refresh: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -21,8 +27,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     const checkAuth = async () => {
         try {
-            const user = await getMe();
-            setUser(user);
+            const me = await getMe();
+            setUser(me);
         } catch {
             setUser(null);
         } finally {
@@ -34,19 +40,19 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         checkAuth();
     }, []);
 
-    const loginHandler = async (data: { username: string; password: string }) => {
-        const user = await login(data);
+    const login = async (data: { login: string; password: string }) => {
+        const user = await loginApi(data);
         setUser(user);
     };
 
-    const logoutHandler = async () => {
-        await logout();
-        setUser(null);
+    const register = async (data: { login: string; password: string }) => {
+        const user = await registerApi(data);
+        setUser(user);
     };
 
-    const refreshHandler = async () => {
-        await refresh();
-        await checkAuth();
+    const logout = async () => {
+        await logoutApi();
+        setUser(null);
     };
 
     return (
@@ -55,9 +61,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 user,
                 isAuthenticated,
                 loading,
-                login: loginHandler,
-                logout: logoutHandler,
-                refresh: refreshHandler,
+                login,
+                register,
+                logout,
             }}
         >
             {children}
@@ -67,6 +73,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
 export const useAuth = () => {
     const context = useContext(AuthContext);
-    if (!context) throw new Error("useAuth must be used inside AuthProvider");
+    if (!context) {
+        throw new Error("useAuth must be used inside AuthProvider");
+    }
     return context;
 };
