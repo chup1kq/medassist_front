@@ -1,0 +1,19 @@
+.filter-input-container {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.filter-input {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid #d6d6d6;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.2s ease;
+
+  &:focus {
+    border-color: var(--main-color-dark);
+    box-shadow: 0 0 0 2px rgba(46, 86, 48, 0.15);
+  }
+}
