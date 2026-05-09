@@ -1,4 +1,4 @@
-import { User } from "../data/auth/Auth";
+import { User } from "../../data/auth/Auth";
 
 const AUTH_API = process.env.REACT_APP_AUTH_API;
 
