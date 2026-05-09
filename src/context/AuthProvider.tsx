@@ -3,8 +3,8 @@ import {
     getMe,
     login as loginApi,
     logout as logoutApi,
-} from "../api/AuthApi";
-import { register as registerApi } from "../api/UserApi";
+} from "../api/auth/AuthApi";
+import { register as registerApi } from "../api/auth/UserApi";
 import { User } from "../data/auth/Auth";
 
 interface AuthContextType {
