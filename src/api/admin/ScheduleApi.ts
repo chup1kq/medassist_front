@@ -4,9 +4,28 @@ import {Schedule, ScheduleUpsert} from "../../data/Schedule";
 
 const API = process.env.REACT_APP_MEDASSIST_ADMIN_API;
 
-export const getSchedules = async (page = 0): Promise<Page<Schedule>> => {
-    const res = await apiFetch(`${API}/schedules?page=${page}`);
+export const getSchedules = async (
+    page = 0,
+    specialistQuery?: string,
+    facilityQuery?: string
+): Promise<Page<Schedule>> => {
+
+    const params = new URLSearchParams({
+        page: String(page),
+    });
+
+    if (specialistQuery) {
+        params.append("specialistQuery", specialistQuery);
+    }
+
+    if (facilityQuery) {
+        params.append("facilityQuery", facilityQuery);
+    }
+
+    const res = await apiFetch(`${API}/schedules?${params.toString()}`);
+
     if (!res.ok) throw new Error("Ошибка загрузки расписания");
+
     return res.json();
 };
 
