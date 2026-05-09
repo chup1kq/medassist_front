@@ -4,6 +4,18 @@ import {DocumentType, DocumentTypeUpsert} from "../../data/Document";
 
 const API = process.env.REACT_APP_MEDASSIST_ADMIN_API;
 
+export const getAllDocumentTypes = async (): Promise<DocumentType[]> => {
+    const response = await apiFetch(
+        `${API}/document-types/all`
+    );
+
+    if (!response.ok) {
+        throw new Error("Ошибка загрузки типов документов");
+    }
+
+    return await response.json();
+};
+
 export const getDocumentTypes = async (
     page = 0,
     query?: string
