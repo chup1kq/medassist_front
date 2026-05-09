@@ -4,6 +4,14 @@ import {Condition, ConditionUpsert} from "../../data/Service";
 
 const API = process.env.REACT_APP_MEDASSIST_ADMIN_API;
 
+export const getAllConditions = async (): Promise<Condition[]> => {
+    const res = await apiFetch(`${API}/conditions/all`);
+
+    if (!res.ok) throw new Error("Ошибка загрузки conditions");
+
+    return res.json();
+}
+
 export const getConditions = async (
     page = 0,
     query?: string
