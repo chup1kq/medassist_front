@@ -4,6 +4,18 @@ import {apiFetch} from "../apiFetch";
 
 const API = process.env.REACT_APP_MEDASSIST_ADMIN_API;
 
+export const getAllSpecializations = async (): Promise<Specialization[]> => {
+    const response = await apiFetch(
+        `${API}/specializations/all`
+    );
+
+    if (!response.ok) {
+        throw new Error("Ошибка загрузки специализаций");
+    }
+
+    return await response.json();
+};
+
 export const getSpecializations = async (
     page = 0,
     query?: string
